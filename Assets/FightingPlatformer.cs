@@ -82,11 +82,11 @@ public class FightingPlatformer : MonoBehaviour
         {
             if (feet.isTouchingGround(0.3f))
             {
-                this.transform.position += new Vector3(moveDir.x * moveSpeed, 0, 0);
+                this.transform.position += new Vector3(moveDir.x * moveSpeed, 0, 0) * Time.deltaTime;
                 jumpCount = 2;
             }
             else
-                this.transform.position += new Vector3(moveDir.x * jumpMoveSpeed, 0, 0);
+                this.transform.position += new Vector3(moveDir.x * jumpMoveSpeed, 0, 0) * Time.deltaTime;
 
             //running
             if (moveDir.x != 0 && rb.velocity.y == 0)

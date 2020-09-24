@@ -6,11 +6,13 @@ using TMPro;
 public class PlayerSelection : MonoBehaviour
 {
     public GameObject[] players;
+    public TextMeshProUGUI[] healthbarNames;
     private GameObject currentPlayer;
     private GameObject currentAvatar;
     public TextMeshProUGUI charecterName;
     public TextMeshProUGUI specialName;
     public TextMeshProUGUI specialDescription;
+    public TextMeshProUGUI PlayerNameField;
     private int playerNo = 0;
 
     private int activePlayers = 0;
@@ -65,9 +67,11 @@ public class PlayerSelection : MonoBehaviour
         Destroy(currentAvatar);
         Instantiate(currentPlayer, currentPlayer.transform.position, Quaternion.identity);
         
-        currentPlayer.GetComponent<FightingPlatformer>().healthbar = healthbars[activePlayers];
+
+        healthbarNames[activePlayers].SetText(PlayerNameField.text);
         currentPlayer.GetComponent<FightingPlatformer>().playerIndex = activePlayers;
         Debug.Log(activePlayers);
+        currentPlayer.GetComponent<FightingPlatformer>().healthbar = healthbars[activePlayers];
         activePlayers += 1;
     }
 }

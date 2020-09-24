@@ -27,4 +27,10 @@ public class PlayerCreator : MonoBehaviour
             cam.GetComponent<cameraSizer>().enabled = true;
         }
     }
+    void Start()
+    {
+
+            //On();
+        
+    }
 }
