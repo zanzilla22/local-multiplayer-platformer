@@ -25,7 +25,7 @@ public class FightingPlatformer : MonoBehaviour
 
     public float moveSpeed;
     public float jumpMoveSpeed;
-    private Rigidbody2D rb;
+
     public float jumpForce;
 
     private Vector2 inputVector;
@@ -33,7 +33,9 @@ public class FightingPlatformer : MonoBehaviour
 
     private Animator anim;
 
-    public void Awake()
+    public Rigidbody2D rb;
+
+    public void Start()
     {
         rb = this.GetComponent<Rigidbody2D>();
         anim = this.GetComponent<Animator>();
@@ -121,6 +123,7 @@ public class FightingPlatformer : MonoBehaviour
     {
         if (feet.isTouchingGround(0.3f) || jumpCount != 0)
         {
+            rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.AddForce(this.transform.up * jumpForce);
             jumpCount--;
         }

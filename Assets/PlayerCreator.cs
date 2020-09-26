@@ -13,7 +13,8 @@ public class PlayerCreator : MonoBehaviour
             for (int i = 0; i < inputStuff.Length; i++)
             {
                 inputStuff[i].SetActive(true);
-                cam.GetComponent<cameraSizer>().enabled = false;
+                cam.GetComponent<multipleTargetCameraBrackeys>().enabled = false;
+                cam.GetComponent<Camera>().fieldOfView = 55;
                 cam.transform.position = new Vector3(0, 0, cam.transform.position.z);
                 cam.GetComponent<Camera>().orthographicSize = 5;
             }
@@ -24,7 +25,8 @@ public class PlayerCreator : MonoBehaviour
         for (int i = 0; i < inputStuff.Length; i++)
         {
             inputStuff[i].SetActive(false);
-            cam.GetComponent<cameraSizer>().enabled = true;
+            cam.GetComponent<multipleTargetCameraBrackeys>().enabled = true;
+            cam.GetComponent<Camera>().fieldOfView = 55;
         }
     }
     void Start()

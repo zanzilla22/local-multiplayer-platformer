@@ -127,9 +127,10 @@ MonoBehaviour:
     m_Bits: 512
   feet: {fileID: 6848190635665646901}
   specialAttack: bigSmash
-  moveSpeed: 0.025
-  jumpMoveSpeed: 0.01
+  moveSpeed: 10
+  jumpMoveSpeed: 8
   jumpForce: 750
+  rb: {fileID: 0}
 --- !u!61 &6848190637294833625
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -10,22 +10,19 @@ public class PlayerInputHandler : MonoBehaviour
     private PlayerInput playerInput;
     public FightingPlatformer mover;
     private GameObject ScrollInput;
+    public bool hasPlayer = false;
     void Awake()
     {
-        //mover = this.GetComponent<FightingPlatformer>();
-        playerInput = this.GetComponent<PlayerInput>();
-        var movers = FindObjectsOfType<FightingPlatformer>();
-        while (movers.Length == 0)
+        StartCoroutine(Setup());
+        
+
+    }
+    void Update()
+    {
+        if (mover != null)
         {
-            movers = FindObjectsOfType<FightingPlatformer>();
+            hasPlayer = true;
         }
-        Debug.Log(movers);
-        int index = playerInput.playerIndex;
-        mover = movers.FirstOrDefault(m => m.GetPlayerIndex() == index);
-
-        ScrollInput = GameObject.FindGameObjectWithTag("ScrollInput");
-
-        ScrollInput.GetComponent<PlayerCreator>().On();
     }
     public void OnMove(CallbackContext context)
     {
@@ -67,5 +64,23 @@ public class PlayerInputHandler : MonoBehaviour
     public void DisableScroll()
     {
         ScrollInput.GetComponent<PlayerCreator>().Off();
+    }
+    IEnumerator Setup()
+    {
+        yield return new WaitForSeconds(0.1f);
+        //mover = this.GetComponent<FightingPlatformer>();
+        playerInput = this.GetComponent<PlayerInput>();
+        var movers = FindObjectsOfType<FightingPlatformer>();
+        //while (movers.Length == 0)
+        //{
+        // movers = FindObjectsOfType<FightingPlatformer>();
+        //}
+        Debug.Log(movers);
+        int index = playerInput.playerIndex;
+        mover = movers.FirstOrDefault(m => m.GetPlayerIndex() == index);
+
+
+        ScrollInput = GameObject.FindGameObjectWithTag("ScrollInput");
+        ScrollInput.GetComponent<PlayerCreator>().On();
     }
 }

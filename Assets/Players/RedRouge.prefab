@@ -127,9 +127,10 @@ MonoBehaviour:
     m_Bits: 512
   feet: {fileID: 2757159948817629145}
   specialAttack: dash
-  moveSpeed: 0.025
-  jumpMoveSpeed: 0.01
+  moveSpeed: 10
+  jumpMoveSpeed: 8
   jumpForce: 750
+  rb: {fileID: 0}
 --- !u!95 &2757159950047043391
 Animator:
   serializedVersion: 3

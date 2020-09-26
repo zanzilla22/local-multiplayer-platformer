@@ -69,7 +69,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b5e8f50ab11a454bb73ddbbadaab4c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerIndex: 1
+  playerIndex: 0
   health: 12
   healthbar: {fileID: 0}
   blood: {fileID: 7760578610935856186, guid: 74e57372a909ca740b5352db8e75b61b, type: 3}
@@ -81,9 +81,10 @@ MonoBehaviour:
     m_Bits: 512
   feet: {fileID: 7264381856139817969}
   specialAttack: comboHit
-  moveSpeed: 0.025
-  jumpMoveSpeed: 0.01
+  moveSpeed: 10
+  jumpMoveSpeed: 8
   jumpForce: 750
+  rb: {fileID: 0}
 --- !u!95 &7264381854865478394
 Animator:
   serializedVersion: 3

@@ -13,11 +13,19 @@ public class PlayerSelection : MonoBehaviour
     public TextMeshProUGUI specialName;
     public TextMeshProUGUI specialDescription;
     public TextMeshProUGUI PlayerNameField;
+
+
     private int playerNo = 0;
 
     private int activePlayers = 0;
     public Slider[] healthbars;
+
+    public GameObject cam;
     void Awake()
+    {
+        StartIt();
+    }
+    void StartIt()
     {
         activePlayers = 0;
         currentPlayer = players[0];
@@ -25,6 +33,8 @@ public class PlayerSelection : MonoBehaviour
         charecterName.SetText(currentAvatar.GetComponent<avatarInfo>().Name);
         specialName.SetText(currentAvatar.GetComponent<avatarInfo>().specialAttackName);
         specialDescription.SetText(currentAvatar.GetComponent<avatarInfo>().specialAttackDescription);
+        nextPlayer();
+        previousPlayer();
     }
     public void nextPlayer()
     {
@@ -64,14 +74,37 @@ public class PlayerSelection : MonoBehaviour
     }
     public void Chosen()
     {
+        //Instantiate(PlayerInputController, Vector3.zero, Quaternion.identity);
+        for (int i = 0; i < players.Length; i++)
+        {
+            nextPlayer();
+        }
         Destroy(currentAvatar);
-        Instantiate(currentPlayer, currentPlayer.transform.position, Quaternion.identity);
+        GameObject thatSpawnedPlayer = Instantiate(currentPlayer, currentPlayer.transform.position, Quaternion.identity);
         
 
         healthbarNames[activePlayers].SetText(PlayerNameField.text);
         currentPlayer.GetComponent<FightingPlatformer>().playerIndex = activePlayers;
-        Debug.Log(activePlayers);
-        currentPlayer.GetComponent<FightingPlatformer>().healthbar = healthbars[activePlayers];
+
+
+        Slider healthbarToAdd = healthbars[activePlayers];
+        Debug.Log(activePlayers + " - " + healthbarToAdd);
+        thatSpawnedPlayer.GetComponent<FightingPlatformer>().healthbar = healthbarToAdd;
+        Debug.Log("Log2: " + activePlayers + " - " + healthbarToAdd);
+
+
+        GameObject[] playerInput = GameObject.FindGameObjectsWithTag("PlayerInputHandler");
+        for (int i = 0; i < playerInput.Length; i++)
+        { 
+            if (!playerInput[i].GetComponent<PlayerInputHandler>().hasPlayer)
+            {
+                playerInput[i].GetComponent<PlayerInputHandler>().mover = thatSpawnedPlayer.GetComponent<FightingPlatformer>();
+            }
+        }
+
+        cam.GetComponent<multipleTargetCameraBrackeys>().targets.Add(thatSpawnedPlayer.transform);
+
         activePlayers += 1;
+
     }
 }
