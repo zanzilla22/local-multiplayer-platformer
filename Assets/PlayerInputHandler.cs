@@ -24,9 +24,19 @@ public class PlayerInputHandler : MonoBehaviour
             hasPlayer = true;
         }
     }
+    public void Reset(CallbackContext context)
+    {
+        if (context.ReadValue<float>() != 0)
+        {
+            if (mover != null)
+            {
+                mover.resetToggle();
+            }
+        }
+    }
     public void OnMove(CallbackContext context)
     {
-        if (mover != null)
+        if (mover != null && !mover.dead)
         {
             mover.SetInputVector(new Vector2(context.ReadValue<float>(), 0));
         }
@@ -35,7 +45,7 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if(context.ReadValue<float>()!= 0)
         {
-            if (mover != null)
+            if (mover != null && !mover.dead)
             {
                 mover.Jump();
             }
@@ -45,7 +55,7 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if(context.ReadValue<float>() != 0)
         {
-            if (mover != null)
+            if (mover != null && !mover.dead)
             {
                 mover.basicAttack();
             }
@@ -55,7 +65,7 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if(context.ReadValue<float>() != 0)
         {
-            if (mover != null)
+            if (mover != null && !mover.dead)
             {
                 mover.bigAttack();
             }

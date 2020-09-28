@@ -7,6 +7,7 @@ public class FightingPlatformer : MonoBehaviour
     [SerializeField]
     public int playerIndex = 0;
     public float health = 12;
+    public float lavaDamage;
     public Slider healthbar;
     public GameObject blood;
     public GameObject avatar;
@@ -17,7 +18,6 @@ public class FightingPlatformer : MonoBehaviour
     private float orBigAttackCoolDown;
 
     public LayerMask whatIsPlayer;
-    private bool dead = false;
 
     public feetDetection feet;
     private int jumpCount = 3;
@@ -31,14 +31,21 @@ public class FightingPlatformer : MonoBehaviour
     private Vector2 inputVector;
     private Vector2 moveDir;
 
-    private Animator anim;
+    public Animator anim;
 
     public Rigidbody2D rb;
 
+    private Vector3 spawnPoint;
+    public bool wantsToReset = false;
+
+    public bool dead = false;
+
     public void Start()
     {
+        lavaDamage = health / 3;
+        spawnPoint = this.transform.position + new Vector3(0, 3, 0);
         rb = this.GetComponent<Rigidbody2D>();
-        anim = this.GetComponent<Animator>();
+        //anim = this.GetComponent<Animator>();
         anim.SetBool("Dead", false);
         anim.enabled = true;
         orBasicAttackCoolDown = basicAttackCoolDown;
@@ -52,21 +59,22 @@ public class FightingPlatformer : MonoBehaviour
     }
     public void SetInputVector(Vector2 direction)
     {
-        inputVector = direction;
+        if (!dead)
+        {
+            inputVector = direction;
+        } else
+        {
+            inputVector = Vector2.zero;
+        }
     }
     void Update()
     {
         healthbar.value = health;
-        if (health <= 0)
+        if (health <= 0 && !dead)
         {
             dead = true;
             StartCoroutine(Die());
-            rb.constraints = RigidbodyConstraints2D.FreezePositionX;
-            if (feet.isTouchingGround(0.3f))
-            {
-                rb.constraints = RigidbodyConstraints2D.FreezePositionY;
-                this.GetComponent<BoxCollider2D>().enabled = false;
-            }
+            
 
             return;
         }
@@ -187,18 +195,69 @@ public class FightingPlatformer : MonoBehaviour
             }
         }
     }
+
+
+    //hurts
+
+
     public void Hurt(float damage)
     {
         anim.SetTrigger("Hurt");
         Instantiate(blood, this.transform.position, Quaternion.identity);
-        health -= damage/2 ;
+        health -= damage / 2;
     }
+    public IEnumerator lavaHurt()
+    {
+        health -= lavaDamage;
+        yield return new WaitForSeconds(0.8f);
+        anim.SetTrigger("lavaHurt");
+        this.transform.position = spawnPoint;
+    }
+
     public IEnumerator Die()
     {
+        rb.constraints = RigidbodyConstraints2D.FreezePositionX;
+        dead = true;
+        //yield return new WaitForSeconds(0.35f);
+        //while (!feet.isTouchingGround(0.2f))
+
+        yield return new WaitForSeconds(0.1f);
+        Debug.Log("DeathWait");
+        yield return new WaitUntil(() => feet.isTouchingGround(0.2f) == true);
+        Debug.Log("DeathWaitOver");
+
+        rb.constraints = RigidbodyConstraints2D.FreezePositionY;
+        this.GetComponent<BoxCollider2D>().enabled = false;
         anim.SetBool("Dead", true);
         yield return new WaitForSeconds(6f);
-        anim.enabled = false;
+        //anim.enabled = false;
     }
+
+    public IEnumerator Restart()
+    {
+        dead = false;
+        health = 12f;
+        Debug.Log(anim + " - " + anim.enabled);
+        anim.enabled = true;
+        Debug.Log(anim + " - " + anim.enabled);
+        yield return new WaitForSeconds(0.1f);
+        anim.SetBool("Dead", false);
+        this.GetComponent<BoxCollider2D>().enabled = true;
+        this.transform.position = spawnPoint;
+        rb.constraints = RigidbodyConstraints2D.None;
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        wantsToReset = false;
+    }
+
+    public void resetToggle()
+    {
+        //wantsToReset = !wantsToReset;
+        wantsToReset = true;
+    }
+
+    //specials
+
+
     public IEnumerator dash()
     {
         if (feet.isTouchingGround(0.3f))

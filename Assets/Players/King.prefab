@@ -71,6 +71,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerIndex: 0
   health: 12
+  lavaDamage: 0
   healthbar: {fileID: 0}
   blood: {fileID: 7760578610935856186, guid: 74e57372a909ca740b5352db8e75b61b, type: 3}
   avatar: {fileID: 8474121396149568192, guid: a59e7ad45d389f84d94e5f3860941a92, type: 3}
@@ -84,7 +85,10 @@ MonoBehaviour:
   moveSpeed: 10
   jumpMoveSpeed: 8
   jumpForce: 750
+  anim: {fileID: 7264381854865478394}
   rb: {fileID: 0}
+  wantsToReset: 0
+  dead: 0
 --- !u!95 &7264381854865478394
 Animator:
   serializedVersion: 3

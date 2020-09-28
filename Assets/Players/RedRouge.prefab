@@ -117,6 +117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerIndex: 0
   health: 12
+  lavaDamage: 0
   healthbar: {fileID: 0}
   blood: {fileID: 7760578610935856186, guid: 74e57372a909ca740b5352db8e75b61b, type: 3}
   avatar: {fileID: 1138394912612307995, guid: c7cfed5d1296e9c4aa44b53e7e535fd5, type: 3}
@@ -130,7 +131,10 @@ MonoBehaviour:
   moveSpeed: 10
   jumpMoveSpeed: 8
   jumpForce: 750
+  anim: {fileID: 2757159950047043391}
   rb: {fileID: 0}
+  wantsToReset: 0
+  dead: 0
 --- !u!95 &2757159950047043391
 Animator:
   serializedVersion: 3
@@ -226,4 +230,4 @@ BoxCollider2D:
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 0.4, y: 0.4}
-  m_EdgeRadius: 0
+  m_EdgeRadius: 0.1

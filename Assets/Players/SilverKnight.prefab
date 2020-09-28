@@ -115,8 +115,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b5e8f50ab11a454bb73ddbbadaab4c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerIndex: 2
+  playerIndex: 0
   health: 12
+  lavaDamage: 0
   healthbar: {fileID: 0}
   blood: {fileID: 7760578610935856186, guid: 74e57372a909ca740b5352db8e75b61b, type: 3}
   avatar: {fileID: 925217754220943923, guid: 56080b044d5a2b4478375646a266172b, type: 3}
@@ -130,7 +131,10 @@ MonoBehaviour:
   moveSpeed: 10
   jumpMoveSpeed: 8
   jumpForce: 750
+  anim: {fileID: 6848190637294833616}
   rb: {fileID: 0}
+  wantsToReset: 0
+  dead: 0
 --- !u!61 &6848190637294833625
 BoxCollider2D:
   m_ObjectHideFlags: 0

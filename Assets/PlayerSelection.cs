@@ -21,6 +21,8 @@ public class PlayerSelection : MonoBehaviour
     public Slider[] healthbars;
 
     public GameObject cam;
+
+    public loopController loopController;
     void Awake()
     {
         StartIt();
@@ -104,7 +106,8 @@ public class PlayerSelection : MonoBehaviour
 
         cam.GetComponent<multipleTargetCameraBrackeys>().targets.Add(thatSpawnedPlayer.transform);
 
-        activePlayers += 1;
+        loopController.players.Add(thatSpawnedPlayer.GetComponent<FightingPlatformer>());
 
+        activePlayers += 1;
     }
 }
