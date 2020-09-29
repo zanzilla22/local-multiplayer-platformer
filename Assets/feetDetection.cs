@@ -13,7 +13,9 @@ public class feetDetection : MonoBehaviour
             return true;
         }
         else
+        {
             return false;
+        }
     }
 
 }

@@ -5,6 +5,8 @@ using UnityEngine;
 public class loopController : MonoBehaviour
 {
     public List<FightingPlatformer> players;
+    public GameObject pressStartButton;
+    public GameObject ScrollThing;
     void Update()
     {
         if(players.Count != 0)
@@ -25,5 +27,10 @@ public class loopController : MonoBehaviour
                 }
             }
         }
+
+        if (players.Count > 0 || ScrollThing.active)
+            pressStartButton.SetActive(false);
+        else
+            pressStartButton.SetActive(true);
     }
 }

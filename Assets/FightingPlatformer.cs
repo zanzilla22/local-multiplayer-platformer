@@ -221,9 +221,13 @@ public class FightingPlatformer : MonoBehaviour
         //yield return new WaitForSeconds(0.35f);
         //while (!feet.isTouchingGround(0.2f))
 
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.8f);
         Debug.Log("DeathWait");
-        yield return new WaitUntil(() => feet.isTouchingGround(0.2f) == true);
+        //yield return new WaitUntil(() => feet.isTouchingGround(0.2f));
+        while(!feet.isTouchingGround(0.2f))
+        {
+            yield return null;
+        }
         Debug.Log("DeathWaitOver");
 
         rb.constraints = RigidbodyConstraints2D.FreezePositionY;
