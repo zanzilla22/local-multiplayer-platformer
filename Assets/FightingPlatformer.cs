@@ -40,8 +40,12 @@ public class FightingPlatformer : MonoBehaviour
 
     public bool dead = false;
 
+    private AudioSource audioPlayer;
+    public AudioClip[] basicHitAudio;
+
     public void Start()
     {
+        audioPlayer = this.GetComponent<AudioSource>();
         lavaDamage = health / 3;
         spawnPoint = this.transform.position + new Vector3(0, 3, 0);
         rb = this.GetComponent<Rigidbody2D>();
@@ -145,6 +149,8 @@ public class FightingPlatformer : MonoBehaviour
                 basicAttackCoolDown = 0;
                 StartCoroutine(smallCoolDown(0.5f));
                 anim.SetTrigger("Attack1");
+                audioPlayer.clip = basicHitAudio[Random.Range(0, basicHitAudio.Length)];
+                audioPlayer.Play(0);
                 var other = Physics2D.OverlapCircleAll(new Vector3(this.transform.position.x + moveDir.x, this.transform.position.y, this.transform.position.z), 1, whatIsPlayer);
                 for (int i = 0; i < other.Length; i++)
                 {
@@ -171,18 +177,7 @@ public class FightingPlatformer : MonoBehaviour
                 anim.SetTrigger("Attack2");
                 if (specialAttack == "bigSmash")
                 {
-                    var other = Physics2D.OverlapCircleAll(new Vector3(this.transform.position.x + moveDir.x, this.transform.position.y, this.transform.position.z), 2, whatIsPlayer);
-                    for (int i = 0; i < other.Length; i++)
-                    {
-                        //Debug.Log(other[i]);
-                        if (other[i].GetComponent<FightingPlatformer>() != this)
-                        {
-                            if (!other[i].GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Player1_Hurt") && !other[i].GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Player2_Hurt"))
-                            {
-                                other[i].GetComponent<FightingPlatformer>().Hurt(2.5f);
-                            }
-                        }
-                    }
+                    StartCoroutine(bigSmash());
                 }
                 if (specialAttack == "dash")
                 {
@@ -191,6 +186,10 @@ public class FightingPlatformer : MonoBehaviour
                 if (specialAttack == "comboHit")
                 {
                     StartCoroutine(comboHit(1f / 3, 3));
+                }
+                if (specialAttack == "Kick")
+                {
+                    StartCoroutine(Kick());
                 }
             }
         }
@@ -217,6 +216,7 @@ public class FightingPlatformer : MonoBehaviour
     public IEnumerator Die()
     {
         rb.constraints = RigidbodyConstraints2D.FreezePositionX;
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         dead = true;
         //yield return new WaitForSeconds(0.35f);
         //while (!feet.isTouchingGround(0.2f))
@@ -261,7 +261,22 @@ public class FightingPlatformer : MonoBehaviour
 
     //specials
 
-
+    public IEnumerator bigSmash()
+    {
+        var other = Physics2D.OverlapCircleAll(new Vector3(this.transform.position.x + moveDir.x, this.transform.position.y, this.transform.position.z), 2, whatIsPlayer);
+        for (int i = 0; i < other.Length; i++)
+        {
+            //Debug.Log(other[i]);
+            if (other[i].GetComponent<FightingPlatformer>() != this)
+            {
+                if (!other[i].GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Player1_Hurt") && !other[i].GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Player2_Hurt"))
+                {
+                    other[i].GetComponent<FightingPlatformer>().Hurt(2.5f);
+                }
+            }
+        }
+        yield return null;
+    }
     public IEnumerator dash()
     {
         if (feet.isTouchingGround(0.3f))
@@ -328,5 +343,21 @@ public class FightingPlatformer : MonoBehaviour
                 yield return new WaitForSeconds(delay);
             }
         }
+    }
+    public IEnumerator Kick()
+    {
+        var other = Physics2D.OverlapCircleAll(new Vector3(this.transform.position.x + moveDir.x, this.transform.position.y, this.transform.position.z), 2, whatIsPlayer);
+        for (int i = 0; i < other.Length; i++)
+        {
+            //Debug.Log(other[i]);
+            if (other[i].GetComponent<FightingPlatformer>() != this)
+            {
+                if (!other[i].GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Player1_Hurt") && !other[i].GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Player2_Hurt"))
+                {
+                    other[i].GetComponent<FightingPlatformer>().Hurt(3.5f);
+                }
+            }
+        }
+        yield return null;
     }
 }
